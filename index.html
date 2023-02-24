@@ -9,19 +9,21 @@
 </head>
 <body>
     <h1>Tic-Tac-Toe</h1>
-    <div class="btn-container">
-        <button class="human-player">Human</button>
-        <button class="ai-player">AI</button>
+    <div class="mode-select">
+        <p>Select mode:</p>
+        <div class="btn-container">
+            <button class="human-player">Human</button>
+            <button class="ai-player">AI Easy</button>
+            <button class="ai-player-hard">AI Hard</button>
+        </div>
     </div>
     <div class="modal">
         <div class="modal-content">
-            <form id="name-form" class="">
-                <label for="player-one">Player 1:</label>
-                <input type="text" id="player-one">
-                <label for="player-two">Player 2:</label>
-                <input type="text" id="player-two">
+                <label for="player-one" class="player-one">Player 1:</label>
+                <input type="text" id="player-one" placeholder="Enter name">
+                <label for="player-two" class="player-two">Player 2:</label>
+                <input type="text" id="player-two" placeholder="Enter name">
                 <button class="submit">Let's Go!</button>
-            </form>
         </div>
     </div>
     <div class="board">
@@ -35,9 +37,10 @@
         <div class="box" id="7"></div>
         <div class="box" id="8"></div>
     </div>
-    <div class="test">
-        <div class="message"></div>
+    <h3 class="message"></h3>
+    <div class="lower-btn-container"> 
         <button class="replay-btn">Replay</button>
+        <button class="refresh-btn">Mode Selection</button>
     </div>
     <script src="script.js"></script>
 </body>

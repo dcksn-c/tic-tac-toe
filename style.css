@@ -1,15 +1,48 @@
-* > div {
-    border: 1px solid black;
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Raleway', sans-serif;
+}
+
+.mode-select {
+    text-align: center;
+}
+
+.btn-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 15px;
+    row-gap: 5px;
+}
+
+.human-player {
+    grid-row: 1/3;
 }
 
 .board {
     display: none;
-    grid-template-columns: 50px 50px 50px;
-    grid-template-rows: 50px 50px 50px;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+    gap: 2px;
+    background-color: black;
 }
 
-.test {
+.box {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    background-color: white;
+    font-size: 90px;
+}
+
+.lower-btn-container {
     display: none;
+    flex-direction: row;
+    gap: 15px;
 }
 
 .modal {
@@ -26,9 +59,21 @@
   }
   
 .modal-content {
+    display: flex;
+    flex-direction: column;
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 20%;
   }
+
+.player-two {
+    margin-top: 20px;
+}
+
+.submit {
+    margin-top: 20px;
+    width: fit-content;
+    align-self: center;
+}

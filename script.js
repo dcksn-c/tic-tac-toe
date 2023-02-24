@@ -20,15 +20,19 @@ const displayControllerModule = (() => {
     const message = document.querySelector(".message");
     const box = document.querySelectorAll(".box");
     const replay =  document.querySelector(".replay-btn");
+    const refresh =  document.querySelector(".refresh-btn");
     const modal = document.querySelector(".modal");
     const humanBtn = document.querySelector(".human-player");
     const aiBtn = document.querySelector(".ai-player");
+    const aiHardBtn = document.querySelector(".ai-player-hard");
     const submitBtn = document.querySelector(".submit");
     const board = document.querySelector(".board");
-    const test = document.querySelector(".test");
+    const lowerBtnContainer = document.querySelector(".lower-btn-container");
+    const modeSelect = document.querySelector(".mode-select");
 
     let humanMode = "";
     let aiMode = "";
+    let aiModeHard = "";
     let circleTurn = "";
     
     const handleClick = (e) => {
@@ -42,9 +46,11 @@ const displayControllerModule = (() => {
                 box.forEach((boxes) => {
                     boxes.removeEventListener("click", handleClick);
                 })
+                lowerBtnContainer.style.display = "flex";
             }
             else if (draw(move)) {
                 message.textContent = "Draw!";
+                lowerBtnContainer.style.display = "flex";
             }
             else {
                 switchTurn();
@@ -57,9 +63,11 @@ const displayControllerModule = (() => {
                 box.forEach((boxes) => {
                     boxes.removeEventListener("click", handleClick);
                 })
+                lowerBtnContainer.style.display = "flex";
             }
             else if (draw(move)) {
                 message.textContent = "Draw!";
+                lowerBtnContainer.style.display = "flex";
             }
             else {
                 switchTurn();
@@ -71,7 +79,6 @@ const displayControllerModule = (() => {
         // const {id} = cell;
         let id = cell.id;
         gameBoardModule.currentBoardState[id] = move;
-        // displayModule.setBox(5, 'X')
         cell.textContent = move;
     }
 
@@ -94,7 +101,7 @@ const displayControllerModule = (() => {
             circleTurn = !circleTurn;
             message.textContent = `${circleTurn ? playerTwo.name + "'s turn." : playerOne.name + "'s turn."}`;
         }
-        else {
+        else if (aiModeHard) {
             hardAiMove();
             if (matchResult(aiPlayer.mark, gameBoardModule.currentBoardState)) {
                 message.textContent = "Computer wins!";
@@ -103,15 +110,29 @@ const displayControllerModule = (() => {
                 box.forEach((boxes) => {
                     boxes.removeEventListener("click", handleClick);
                 })
+                lowerBtnContainer.style.display = "flex";
             }
             else {
                 message.textContent = `${circleTurn ? "Computer's turn." : "Your turn."}`;
             }
-            }
-            
         }
+        else if (aiMode) {
+            easyAiMove();
+            if (matchResult(aiPlayer.mark, gameBoardModule.currentBoardState)) {
+                message.textContent = "Computer wins!";
+                console.log(circleTurn)
+                let box = document.querySelectorAll(".box");
+                box.forEach((boxes) => {
+                    boxes.removeEventListener("click", handleClick);
+                })
+                lowerBtnContainer.style.display = "flex";
+            }
+            else {
+                message.textContent = `${circleTurn ? "Computer's turn." : "Your turn."}`;
+            }
+        }
+    }
     
-
     const easyAiMove = () => {
         let availBox = [...box].filter((boxes) => boxes.textContent !== "X" && boxes.textContent !== "O"
         );
@@ -121,67 +142,68 @@ const displayControllerModule = (() => {
     }
 
     //minimax ai
-
     const hardAiMove = () => {
         const move = minimax("O", gameBoardModule.currentBoardState).index;
         gameBoardModule.currentBoardState[move] = aiPlayer.mark;
         [...box][move].textContent = aiPlayer.mark
-      };
+    };
 
     const minimax = (mark, board) => {
-//         let availBox = [...box].filter((boxes) => boxes.textContent !== "X" && boxes.textContent !== "O"
-//         );
-         let availBox = board.filter(item => item !== 'X' && item !== 'O');
-        
+    //let availBox = [...box].filter((boxes) => boxes.textContent !== "X" && boxes.textContent !== "O");
+        let availBox = board.filter(item => item !== 'X' && item !== 'O');
         if (matchResult(playerOne.mark, board)) {
-          return {
-            score: -100,
-          };
-        } else if (matchResult(aiPlayer.mark, board)) {
-          return {
-            score: 100,
-          };
-        } else if (availBox.length === 0) {
-          return {
-            score: 0,
-          };
+            return {
+                score: -100,
+            };
+        } 
+        else if (matchResult(aiPlayer.mark, board)) {
+            return {
+                score: 100,
+            };
+        } 
+        else if (availBox.length === 0) {
+            return {
+                score: 0,
+            };
         }
         const potentialMoves = [];
         for (let i = 0; i < availBox.length; i++) {
-          let move = {};
-          // let currentEmptyBox = Number(availBox[i].id)
-          move.index = availBox[i];
-          // Shallow Copy
-          let newBoardState = [...board];
-          newBoardState[availBox[i]] = mark;
-          if (mark === aiPlayer.mark) {
-            move.score = minimax(playerOne.mark, newBoardState).score;
-          } else {
-            move.score = minimax(aiPlayer.mark, newBoardState).score;
-          }
-          //[...box][currentEmptyBox] = move.index;
-          potentialMoves.push(move);
+            let move = {};
+            //let currentEmptyBox = Number(availBox[i].id)
+            move.index = availBox[i];
+            //Shallow Copy
+            let newBoardState = [...board];
+            newBoardState[availBox[i]] = mark;
+            if (mark === aiPlayer.mark) {
+                move.score = minimax(playerOne.mark, newBoardState).score;
+            } 
+            else {
+                move.score = minimax(aiPlayer.mark, newBoardState).score;
+            }
+            //[...box][currentEmptyBox] = move.index;
+            potentialMoves.push(move);
         }
         let bestMove = 0;
         if (mark === aiPlayer.mark) {
-          let bestScore = -10000;
-          for (let i = 0; i < potentialMoves.length; i++) {
-            if (potentialMoves[i].score > bestScore) {
-              bestScore = potentialMoves[i].score;
-              bestMove = i;
+            let bestScore = -10000;
+            for (let i = 0; i < potentialMoves.length; i++) {
+                if (potentialMoves[i].score > bestScore) {
+                bestScore = potentialMoves[i].score;
+                bestMove = i;
+                }
             }
-          }
-        } else {
-          let bestScore = 10000;
-          for (let i = 0; i < potentialMoves.length; i++) {
-            if (potentialMoves[i].score < bestScore) {
-              bestScore = potentialMoves[i].score;
-              bestMove = i;
+        } 
+        else {
+            let bestScore = 10000;
+            for (let i = 0; i < potentialMoves.length; i++) {
+                if (potentialMoves[i].score < bestScore) {
+                bestScore = potentialMoves[i].score;
+                bestMove = i;
+                }
             }
-          }
         }
         return potentialMoves[bestMove];
-      };
+    };
 
     const startGame = () => {
         box.forEach((boxes) => {
@@ -196,21 +218,32 @@ const displayControllerModule = (() => {
         modal.style.display = "block";
         humanMode = true;
         aiMode = false;
+        aiModeHard = false;
     })
 
     aiBtn.addEventListener("click", function() {
+        modeSelect.style.display = "none";
         modal.style.display = "none";
         board.style.display = "grid";
-        test.style.display = "block";
         humanMode = false;
         aiMode = true;
+        aiModeHard = false;
+    })
+
+    aiHardBtn.addEventListener("click", function() {
+        modeSelect.style.display = "none";
+        modal.style.display = "none";
+        board.style.display = "grid";
+        humanMode = false;
+        aiMode = false;
+        aiModeHard = true;
     })
 
     submitBtn.addEventListener("click", function(e) {
         e.preventDefault();
+        modeSelect.style.display = "none";
         modal.style.display = "none";
         board.style.display = "grid";
-        test.style.display = "block";
         let playerOneName = document.querySelector("#player-one").value;
         let playerTwoName = document.querySelector("#player-two").value;
         playerOne.name = playerOneName
@@ -219,6 +252,10 @@ const displayControllerModule = (() => {
     })
 
     replay.addEventListener("click", startGame) ;
+
+    refresh.addEventListener("click", function() {
+      document.location.reload();
+    });
 
     startGame();
 

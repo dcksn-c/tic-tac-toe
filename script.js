@@ -270,7 +270,10 @@ const displayControllerModule = (() => {
         message.textContent = playerOne.name + " starts first!"
     })
 
-    replay.addEventListener("click", startGame) ;
+    replay.addEventListener("click", function() {
+        lowerBtnContainer.style.display = "none";
+        message.textContent = ''
+        startGame()}) ;
 
     refresh.addEventListener("click", function() {
       document.location.reload();

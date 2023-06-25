@@ -38,6 +38,9 @@ const displayControllerModule = (() => {
     const handleClick = (e) => {
         let cell = e.target;
         let move = circleTurn ? "O" : "X";
+        if (move !== "O") {
+            cell.classList.add("playerOneMark")
+        }
         makeMove(cell, move);
         if (humanMode) {
             if (matchResult(move, gameBoardModule.currentBoardState)) {
@@ -138,14 +141,20 @@ const displayControllerModule = (() => {
         );
         let move = availBox[Math.floor(Math.random() * availBox.length)];
         move.textContent = aiPlayer.mark
+        move.classList.remove("playerOneMark")
+        move.removeEventListener("click", handleClick);
         gameBoardModule.currentBoardState[move.id] = aiPlayer.mark;
     }
 
     //minimax ai
     const hardAiMove = () => {
         const move = minimax("O", gameBoardModule.currentBoardState).index;
+        const marked = [...box][move]
         gameBoardModule.currentBoardState[move] = aiPlayer.mark;
+      
         [...box][move].textContent = aiPlayer.mark
+        marked.classList.remove("playerOneMark")
+        marked.removeEventListener("click", handleClick);
     };
 
     const minimax = (mark, board) => {
@@ -241,11 +250,21 @@ const displayControllerModule = (() => {
 
     submitBtn.addEventListener("click", function(e) {
         e.preventDefault();
+        let playerOneName = document.querySelector("#player-one").value;
+        let playerTwoName = document.querySelector("#player-two").value;
+
+        if (playerOneName === '') {
+            alert("Please enter Player 1's name.");
+            return
+        }
+        if (playerTwoName === '') {
+            alert("Please enter Player 2's name.");
+            return
+        }
+
         modeSelect.style.display = "none";
         modal.style.display = "none";
         board.style.display = "grid";
-        let playerOneName = document.querySelector("#player-one").value;
-        let playerTwoName = document.querySelector("#player-two").value;
         playerOne.name = playerOneName
         playerTwo.name = playerTwoName
         message.textContent = playerOne.name + " starts first!"

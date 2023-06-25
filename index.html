@@ -5,28 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
-<body>
-    <h1>Tic-Tac-Toe</h1>
-    <div class="mode-select">
-        <p>Select mode:</p>
+<body class="d-flex flex-column align-items-center justify-content-center" style="color: #56768c">
+    <h1 class="my-5" style="font-size: 6rem">Tic-<span style="color: #f98ec4">Tac</span>-Toe</h1>
+    <div class="mode-select text-center flex-grow-1">
+        <p style="font-size: 2rem">Select mode:</p>
         <div class="btn-container">
-            <button class="human-player">Human</button>
-            <button class="ai-player">AI Easy</button>
-            <button class="ai-player-hard">AI Hard</button>
+            <button class="human-player btn btn-primary btn-lg px-5 shadow" data-bs-toggle="modal" data-bs-target="#enter-names-modal" style="background-color: #ba77e9; border: none;">Human</button>
+            <button class="ai-player btn btn-primary btn-lg shadow" style="background-color: #ba77e9; border: none;">AI Easy</button>
+            <button class="ai-player-hard btn btn-warning btn-lg shadow">AI Hard</button>
         </div>
     </div>
-    <div class="modal">
-        <div class="modal-content">
+
+    <div class="modal fade" tabindex="-1" id="enter-names-modal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Enter your name</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
                 <label for="player-one" class="player-one">Player 1:</label>
-                <input type="text" id="player-one" placeholder="Enter name">
-                <label for="player-two" class="player-two">Player 2:</label>
-                <input type="text" id="player-two" placeholder="Enter name">
-                <button class="submit">Let's Go!</button>
+                <input type="text" id="player-one" placeholder="Enter name" class="player-one-name" required>
+                <label for="player-two" class="player-two mt-3">Player 2:</label>
+                <input type="text" id="player-two" placeholder="Enter name" class="player-two-name" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit btn btn-success" data-bs-dismiss="modal" style="background-color: #74d1d3; color: #56768c; border: none;">Let's Go!</button>
+
+            </div>
+          </div>
         </div>
-    </div>
-    <div class="board">
+      </div>
+    <div class="board mb-5" style="font-family: Raleway">
         <div class="box" id="0"></div>
         <div class="box" id="1"></div>
         <div class="box" id="2"></div>
@@ -37,11 +53,13 @@
         <div class="box" id="7"></div>
         <div class="box" id="8"></div>
     </div>
-    <h3 class="message"></h3>
+    </div>
+    <h3 class="message mb-3"></h3>
     <div class="lower-btn-container"> 
-        <button class="replay-btn">Replay</button>
-        <button class="refresh-btn">Mode Selection</button>
+        <button class="replay-btn btn btn-primary btn-lg shadow" style="background-color: #ba77e9; border: none;">Replay</button>
+        <button class="refresh-btn btn btn-primary btn-lg shadow" style="background-color: #ba77e9; border: none;">Mode Selection</button>
     </div>
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>
